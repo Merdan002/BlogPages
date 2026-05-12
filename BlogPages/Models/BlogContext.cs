@@ -7,5 +7,6 @@ namespace KisselBlog.Models
         public BlogContext(DbContextOptions<BlogContext> options) : base(options) { }
 
         public DbSet<BlogYazisi> BlogYazilari { get; set; }
+        public DbSet<Kullanici> Kullanicilar { get; set; }
     }
 }

@@ -1,18 +1,26 @@
 ﻿@model KisselBlog.Models.BlogYazisi
 
-<div class="container mt-4">
-    <h2>✏️ Yeni Yazı Ekle</h2>
+<div class="topbar">
+    <div>
+        <h4>✏️ Yeni Yazı Ekle</h4>
+        <small style="color:#6060a0">Yeni bir blog yazısı oluştur.</small>
+    </div>
+    <a href="/Blog" class="btn-edit"><i class="fas fa-arrow-left me-2"></i>Geri Dön</a>
+</div>
 
+<div class="form-card">
     <form method="post">
-        <div class="mb-3">
-            <label>Başlık</label>
-            <input asp-for="Baslik" class="form-control" />
+        <div class="mb-4">
+            <label class="form-label">Başlık</label>
+            <input asp-for="Baslik" class="form-control" placeholder="Yazı başlığını gir..." />
         </div>
-        <div class="mb-3">
-            <label>İçerik</label>
-            <textarea asp-for="Icerik" class="form-control" rows="6"></textarea>
+        <div class="mb-4">
+            <label class="form-label">İçerik</label>
+            <textarea asp-for="Icerik" class="form-control" rows="10" placeholder="Yazını buraya yaz..."></textarea>
         </div>
-        <button type="submit" class="btn btn-success">Kaydet</button>
-        <a href="/Blog" class="btn btn-secondary">Geri Dön</a>
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn-save"><i class="fas fa-save me-2"></i>Yayınla</button>
+            <a href="/Blog" class="btn-delete">İptal</a>
+        </div>
     </form>
 </div>

@@ -1,40 +1,71 @@
 ﻿@model List<KisselBlog.Models.BlogYazisi>
 
-<div class="hero">
-    <h1>📖 Kişisel Blogum</h1>
-    <p>Düşünceler, notlar ve daha fazlası...</p>
-    <a href="/Blog/Ekle" class="btn btn-light btn-lg mt-2">+ Yeni Yazı Ekle</a>
+<!-- TOPBAR -->
+<div class="topbar">
+    <div>
+        <h4>📊 Dashboard</h4>
+        <small style="color:#6060a0">Hoş geldin! Blog yazılarını buradan yönet.</small>
+    </div>
+    <a href="/Blog/Ekle" class="btn-new"><i class="fas fa-plus me-2"></i>Yeni Yazı</a>
 </div>
 
-<div class="container">
-    @if (Model.Count == 0)
-    {
-        <div class="text-center py-5">
-            <h4>Henüz hiç yazı yok 📝</h4>
-            <p>İlk yazını ekleyerek başla!</p>
-            <a href="/Blog/Ekle" class="btn btn-primary">İlk Yazımı Ekle</a>
+<!-- STAT CARDS -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="icon icon-purple"><i class="fas fa-pen-nib"></i></div>
+            <h3>@Model.Count</h3>
+            <p>Toplam Yazı</p>
         </div>
-    }
-
-    <div class="row">
-        @foreach (var yazi in Model)
-        {
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">@yazi.Baslik</h5>
-                        <p class="card-text text-muted">
-                            @(yazi.Icerik.Length > 150 ? yazi.Icerik.Substring(0, 150) + "..." : yazi.Icerik)
-                        </p>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between align-items-center">
-                        <small class="text-muted">🗓️ @yazi.Tarih.ToShortDateString()</small>
-                        <a href="/Blog/Duzenle/@yazi.Id" class="btn btn-sm btn-outline-primary">✏️ Düzenle</a>
-                        <a href="/Blog/Sil/@yazi.Id" class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('Bu yazıyı silmek istediğine emin misin?')">🗑️ Sil</a>
-                    </div>
-                </div>
-            </div>
-        }
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="icon icon-blue"><i class="fas fa-calendar"></i></div>
+            <h3>@Model.Count(x => x.Tarih.Month == DateTime.Now.Month)</h3>
+            <p>Bu Ay Yazılan</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="icon icon-green"><i class="fas fa-clock"></i></div>
+            <h3>@(Model.Any() ? Model.Max(x => x.Tarih).ToString("dd MMM") : "-")</h3>
+            <p>Son Yazı Tarihi</p>
+        </div>
     </div>
 </div>
+
+<!-- YAZI LİSTESİ -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 style="color:white">📝 Yazılar</h5>
+    <small style="color:#6060a0">@Model.Count yazı bulundu</small>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="fas fa-feather-alt d-block"></i>
+        <h5 style="color:#6060a0">Henüz yazı yok</h5>
+        <p>İlk yazını ekleyerek başla!</p>
+        <a href="/Blog/Ekle" class="btn-save mt-3 d-inline-block">İlk Yazımı Ekle</a>
+    </div>
+}
+
+@foreach (var yazi in Model.OrderByDescending(x => x.Tarih))
+{
+    <div class="blog-card">
+        <div class="d-flex justify-content-between align-items-start">
+            <div style="flex:1">
+                <h5>@yazi.Baslik</h5>
+                <p>@(yazi.Icerik.Length > 120 ? yazi.Icerik.Substring(0, 120) + "..." : yazi.Icerik)</p>
+                <span class="badge-date"><i class="fas fa-calendar-alt me-1"></i>@yazi.Tarih.ToString("dd MMMM yyyy")</span>
+            </div>
+            <div class="d-flex gap-2 ms-3">
+                <a href="/Blog/Duzenle/@yazi.Id" class="btn-edit"><i class="fas fa-edit me-1"></i>Düzenle</a>
+                <a href="/Blog/Sil/@yazi.Id" class="btn-delete"
+                       onclick="return confirm('Bu yazıyı silmek istediğine emin misin?')">
+                    <i class="fas fa-trash me-1"></i>Sil
+                </a>
+            </div>
+        </div>
+    </div>
+}

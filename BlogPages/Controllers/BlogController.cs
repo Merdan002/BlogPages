@@ -1,5 +1,6 @@
 ﻿using KisselBlog.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace KisselBlog.Controllers
 {
@@ -12,9 +13,15 @@ namespace KisselBlog.Controllers
             _context = context;
         }
 
+        private bool GirisYapildiMi()
+        {
+            return HttpContext.Session.GetString("KullaniciAdi") != null;
+        }
+
         // Tüm yazıları listele
         public IActionResult Index()
         {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
             var yazilar = _context.BlogYazilari.ToList();
             return View(yazilar);
         }
@@ -22,6 +29,7 @@ namespace KisselBlog.Controllers
         // Yeni yazı ekleme sayfası
         public IActionResult Ekle()
         {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
             return View();
         }
 
@@ -29,6 +37,7 @@ namespace KisselBlog.Controllers
         [HttpPost]
         public IActionResult Ekle(BlogYazisi yazi)
         {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
             _context.BlogYazilari.Add(yazi);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -37,6 +46,7 @@ namespace KisselBlog.Controllers
         //
         public IActionResult Sil(int id)
         {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
             var yazi = _context.BlogYazilari.Find(id);
             if (yazi != null)
             {
@@ -49,6 +59,7 @@ namespace KisselBlog.Controllers
         // Düzenleme sayfasını aç
         public IActionResult Duzenle(int id)
         {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
             var yazi = _context.BlogYazilari.Find(id);
             if (yazi == null) return RedirectToAction("Index");
             return View(yazi);
@@ -58,6 +69,7 @@ namespace KisselBlog.Controllers
         [HttpPost]
         public IActionResult Duzenle(BlogYazisi yazi)
         {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
             var mevcutYazi = _context.BlogYazilari.Find(yazi.Id);
             if (mevcutYazi != null)
             {
