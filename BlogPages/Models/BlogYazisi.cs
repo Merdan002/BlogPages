@@ -8,5 +8,6 @@
         public DateTime Tarih { get; set; } = DateTime.Now;
         public int? KategoriId { get; set; }
         public Kategori? Kategori { get; set; }
+        public ICollection<Yorum> Yorumlar { get; set; } = new List<Yorum>();
     }
 }

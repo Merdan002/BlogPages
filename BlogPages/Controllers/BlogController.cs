@@ -29,6 +29,12 @@ namespace KisselBlog.Controllers
                 yazilar = yazilar.Where(x => x.Baslik.Contains(ara) || x.Icerik.Contains(ara));
 
             ViewBag.Ara = ara;
+            ViewBag.Yorumlar = _context.Yorumlar
+                .Include(x => x.BlogYazisi)
+                .OrderByDescending(x => x.Tarih)
+                .ToList();
+            ViewBag.YorumSayisi = _context.Yorumlar.Count();
+
             return View(yazilar.OrderByDescending(x => x.Tarih).ToList());
         }
 
@@ -100,12 +106,46 @@ namespace KisselBlog.Controllers
             return View(yazilar.OrderByDescending(x => x.Tarih).ToList());
         }
 
-        // Yazı detay sayfası
+        // Yazı detay sayfası (yorumlarla birlikte)
         public IActionResult Detay(int id)
         {
-            var yazi = _context.BlogYazilari.Find(id);
+            var yazi = _context.BlogYazilari
+                .Include(x => x.Kategori)
+                .Include(x => x.Yorumlar)
+                .FirstOrDefault(x => x.Id == id);
+
             if (yazi == null) return RedirectToAction("Anasayfa");
             return View(yazi);
         }
+        // Yorum ekle
+        [HttpPost]
+        public IActionResult YorumEkle(int blogYazisiId, string yazarAdi, string icerik)
+        {
+            if (!string.IsNullOrEmpty(yazarAdi) && !string.IsNullOrEmpty(icerik))
+            {
+                _context.Yorumlar.Add(new Yorum
+                {
+                    BlogYazisiId = blogYazisiId,
+                    YazarAdi = yazarAdi,
+                    Icerik = icerik
+                });
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Detay", new { id = blogYazisiId });
+        }
+
+        // Yorum sil
+        public IActionResult YorumSil(int id)
+        {
+            if (!GirisYapildiMi()) return RedirectToAction("Index", "Giris");
+            var yorum = _context.Yorumlar.Find(id);
+            int yazıId = yorum?.BlogYazisiId ?? 0;
+            if (yorum != null)
+            {
+                _context.Yorumlar.Remove(yorum);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
-}   
+}

@@ -79,12 +79,103 @@
                 font-size: 0.85rem;
             }
 
+            .badge-kategori {
+                background: rgba(13,110,253,0.15);
+                color: #60a5fa;
+                padding: 6px 15px;
+                border-radius: 20px;
+                font-size: 0.85rem;
+            }
+
             .article-body {
                 color: #b0b0c0;
                 font-size: 1.05rem;
                 line-height: 1.9;
                 white-space: pre-wrap;
             }
+
+            /* YORUMLAR */
+            .yorumlar {
+                margin-top: 60px;
+                padding-top: 40px;
+                border-top: 1px solid #2a2a4a;
+            }
+
+                .yorumlar h3 {
+                    color: white;
+                    font-size: 1.4rem;
+                    margin-bottom: 25px;
+                }
+
+            .yorum-card {
+                background: #1a1a2e;
+                border: 1px solid #2a2a4a;
+                border-radius: 12px;
+                padding: 18px;
+                margin-bottom: 15px;
+            }
+
+                .yorum-card .yazar {
+                    color: #a78bfa;
+                    font-weight: 600;
+                    margin-bottom: 6px;
+                }
+
+                .yorum-card .icerik {
+                    color: #9090b0;
+                    font-size: 0.95rem;
+                }
+
+                .yorum-card .tarih {
+                    color: #4040a0;
+                    font-size: 0.8rem;
+                    margin-top: 8px;
+                }
+
+            /* YORUM FORMU */
+            .yorum-form {
+                background: #1a1a2e;
+                border: 1px solid #2a2a4a;
+                border-radius: 16px;
+                padding: 25px;
+                margin-top: 30px;
+            }
+
+                .yorum-form h5 {
+                    color: white;
+                    margin-bottom: 20px;
+                }
+
+            .form-control {
+                background: #0f0f1a !important;
+                border: 1px solid #2a2a4a !important;
+                color: #e0e0e0 !important;
+                border-radius: 10px;
+            }
+
+                .form-control:focus {
+                    border-color: #6f42c1 !important;
+                    box-shadow: 0 0 0 3px rgba(111,66,193,0.2) !important;
+                }
+
+            .form-label {
+                color: #9090b0;
+                font-size: 0.9rem;
+            }
+
+            .btn-yorum {
+                background: linear-gradient(135deg, #6f42c1, #0d6efd);
+                color: white;
+                border: none;
+                padding: 10px 24px;
+                border-radius: 10px;
+                font-weight: 600;
+                transition: opacity 0.2s;
+            }
+
+                .btn-yorum:hover {
+                    opacity: 0.85;
+                }
 
             .footer {
                 background: #1a1a2e;
@@ -93,6 +184,12 @@
                 padding: 30px;
                 color: #4040a0;
                 margin-top: 80px;
+            }
+
+            .bos-yorum {
+                text-align: center;
+                padding: 30px;
+                color: #4040a0;
             }
     </style>
 </head>
@@ -114,11 +211,64 @@
     <div class="article">
         <div class="article-header">
             <h1>@Model.Baslik</h1>
-            <span class="badge-date">
-                <i class="fas fa-calendar me-1"></i>@Model.Tarih.ToString("dd MMMM yyyy")
-            </span>
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="badge-date">
+                    <i class="fas fa-calendar me-1"></i>@Model.Tarih.ToString("dd MMMM yyyy")
+                </span>
+                @if (Model.Kategori != null)
+                {
+                    <span class="badge-kategori">
+                        <i class="fas fa-tag me-1"></i>@Model.Kategori.Ad
+                    </span>
+                }
+                <span class="badge-date">
+                    <i class="fas fa-comments me-1"></i>@Model.Yorumlar.Count yorum
+                </span>
+            </div>
         </div>
+
         <div class="article-body">@Model.Icerik</div>
+
+        <!-- YORUMLAR -->
+        <div class="yorumlar">
+            <h3>💬 Yorumlar (@Model.Yorumlar.Count)</h3>
+
+            @if (!Model.Yorumlar.Any())
+            {
+                <div class="bos-yorum">
+                    <i class="fas fa-comment-slash d-block" style="font-size:2rem; margin-bottom:10px"></i>
+                    <p>Henüz yorum yok. İlk yorumu sen yap!</p>
+                </div>
+            }
+
+            @foreach (var yorum in Model.Yorumlar.OrderByDescending(y => y.Tarih))
+            {
+                <div class="yorum-card">
+                    <div class="yazar"><i class="fas fa-user-circle me-2"></i>@yorum.YazarAdi</div>
+                    <div class="icerik">@yorum.Icerik</div>
+                    <div class="tarih"><i class="fas fa-clock me-1"></i>@yorum.Tarih.ToString("dd MMMM yyyy HH:mm")</div>
+                </div>
+            }
+
+            <!-- YORUM FORMU -->
+            <div class="yorum-form">
+                <h5>✏️ Yorum Yap</h5>
+                <form method="post" action="/Blog/YorumEkle">
+                    <input type="hidden" name="blogYazisiId" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label class="form-label">Adın</label>
+                        <input type="text" name="yazarAdi" class="form-control" placeholder="Adını gir..." />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Yorumun</label>
+                        <textarea name="icerik" class="form-control" rows="4" placeholder="Yorumunu yaz..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-yorum">
+                        <i class="fas fa-paper-plane me-2"></i>Yorum Gönder
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- FOOTER -->
