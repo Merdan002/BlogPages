@@ -8,5 +8,6 @@ namespace KisselBlog.Models
 
         public DbSet<BlogYazisi> BlogYazilari { get; set; }
         public DbSet<Kullanici> Kullanicilar { get; set; }
+        public DbSet<Kategori> Kategoriler { get; set; }
     }
 }

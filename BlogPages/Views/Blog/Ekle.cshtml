@@ -15,6 +15,16 @@
             <input asp-for="Baslik" class="form-control" placeholder="Yazı başlığını gir..." />
         </div>
         <div class="mb-4">
+            <label class="form-label">Kategori</label>
+            <select asp-for="KategoriId" class="form-select">
+                <option value="">-- Kategori Seç --</option>
+                @foreach (var k in ViewBag.Kategoriler as List<KisselBlog.Models.Kategori>)
+                {
+                    <option value="@k.Id">@k.Ad</option>
+                }
+            </select>
+        </div>
+        <div class="mb-4">
             <label class="form-label">İçerik</label>
             <textarea asp-for="Icerik" class="form-control" rows="10" placeholder="Yazını buraya yaz..."></textarea>
         </div>

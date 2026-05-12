@@ -125,6 +125,43 @@
         }
 
         .empty i { font-size: 3rem; margin-bottom: 20px; display: block; }
+        /* ARAMA */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #0f0f1a;
+    border: 1px solid #2a2a4a;
+    border-radius: 12px;
+    padding: 6px 6px 6px 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.search-icon { color: #6060a0; margin-right: 10px; }
+
+.search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    flex: 1;
+}
+
+    .search-input::placeholder { color: #4040a0; }
+
+    .search-btn {
+    background: linear-gradient(135deg, #6f42c1, #0d6efd);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+    .search-btn:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
@@ -142,12 +179,21 @@
     </nav>
 
     <!-- HERO -->
-    <div class="hero">
-        <div class="container">
-            <h1>Merhaba, ben <span>Blogcuyum!</span> 👋</h1>
-            <p>Düşüncelerimi, notlarımı ve deneyimlerimi burada paylaşıyorum.</p>
-        </div>
+     <div class="hero">
+    <div class="container">
+        <h1>Merhaba, ben <span>Blogcuyum!</span> 👋</h1>
+        <p>Düşüncelerimi, notlarımı ve deneyimlerimi burada paylaşıyorum.</p>
+
+        <form method="get" action="/Blog/Anasayfa" class="mt-4">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="ara" value="@ViewBag.Ara"
+                       placeholder="Yazılarda ara..." class="search-input" />
+                <button type="submit" class="search-btn">Ara</button>
+            </div>
+        </form>
     </div>
+</div>
 
     <!-- YAZILAR -->
     <div class="section">
@@ -158,13 +204,21 @@
             </div>
 
             @if (!Model.Any())
-            {
-                <div class="empty">
-                    <i class="fas fa-feather-alt"></i>
-                    <h5>Henüz yazı yok</h5>
-                    <p>Yakında içerikler eklenecek!</p>
-                </div>
-            }
+{
+    <div class="empty">
+        <i class="fas fa-feather-alt"></i>
+        @if (ViewBag.Ara != null)
+        {
+            <h5>"@ViewBag.Ara" için sonuç bulunamadı</h5>
+            <p><a href="/Blog/Anasayfa" style="color:#a78bfa">Tüm yazıları gör</a></p>
+        }
+        else
+        {
+            <h5>Henüz yazı yok</h5>
+            <p>Yakında içerikler eklenecek!</p>
+        }
+    </div>
+}
 
             @foreach (var yazi in Model)
             {

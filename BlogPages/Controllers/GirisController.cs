@@ -59,5 +59,54 @@ namespace KisselBlog.Controllers
             _context.SaveChanges();
             return Content("Kullanıcı oluşturuldu! admin / 1234 ile giriş yapabilirsin.");
         }
+
+        // Şifre değiştirme sayfası
+        public IActionResult SifreDegistir()
+        {
+            if (HttpContext.Session.GetString("KullaniciAdi") == null)
+                return RedirectToAction("Index");
+            return View();
+        }
+
+        // Şifre değiştirmeyi kaydet
+        [HttpPost]
+        public IActionResult SifreDegistir(string eskiSifre, string yeniSifre, string yeniSifreTekrar)
+        {
+            if (HttpContext.Session.GetString("KullaniciAdi") == null)
+                return RedirectToAction("Index");
+
+            var kullaniciAdi = HttpContext.Session.GetString("KullaniciAdi");
+            var kullanici = _context.Kullanicilar.FirstOrDefault(k => k.KullaniciAdi == kullaniciAdi);
+
+            if (kullanici == null)
+            {
+                ViewBag.Hata = "Kullanıcı bulunamadı!";
+                return View();
+            }
+
+            if (kullanici.Sifre != eskiSifre)
+            {
+                ViewBag.Hata = "Mevcut şifre hatalı!";
+                return View();
+            }
+
+            if (yeniSifre != yeniSifreTekrar)
+            {
+                ViewBag.Hata = "Yeni şifreler eşleşmiyor!";
+                return View();
+            }
+
+            if (yeniSifre.Length < 4)
+            {
+                ViewBag.Hata = "Şifre en az 4 karakter olmalı!";
+                return View();
+            }
+
+            kullanici.Sifre = yeniSifre;
+            _context.SaveChanges();
+
+            ViewBag.Basari = "Şifre başarıyla değiştirildi!";
+            return View();
+        }
     }
 }

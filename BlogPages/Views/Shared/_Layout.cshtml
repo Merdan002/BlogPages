@@ -216,6 +216,42 @@
         }
 
         .empty-state i { font-size: 3rem; margin-bottom: 15px; }
+        /* ARAMA */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #0f0f1a;
+    border: 1px solid #2a2a4a;
+    border-radius: 12px;
+    padding: 6px 6px 6px 16px;
+    max-width: 500px;
+}
+
+.search-icon { color: #6060a0; margin-right: 10px; }
+
+.search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    flex: 1;
+}
+
+.search-input::placeholder { color: #4040a0; }
+
+.search-btn {
+    background: linear-gradient(135deg, #6f42c1, #0d6efd);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.search-btn:hover { opacity: 0.85; }
     </style>
 </head>
 <body>
@@ -231,12 +267,18 @@
         <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Ekle" ? "active" : "")" href="/Blog/Ekle">
             <i class="fas fa-plus-circle"></i> Yeni Yazı
         </a>
+        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Kategori" ? "active" : "")" href="/Kategori">
+    <i class="fas fa-tags"></i> Kategoriler
+</a>
 
         <div class="nav-section mt-4">Sistem</div>
         <a class="nav-link" href="#">
             <i class="fas fa-cog"></i> Ayarlar
         </a>
         <div class="nav-section mt-4">Hesap</div>
+        <a class="nav-link" href="/Giris/SifreDegistir">
+    <i class="fas fa-shield-alt"></i> Şifre Değiştir
+</a>
          <a class="nav-link" href="/Giris/Cikis">
          <i class="fas fa-sign-out-alt"></i> Çıkış Yap
          </a>

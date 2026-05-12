@@ -40,6 +40,14 @@
     <small style="color:#6060a0">@Model.Count yazı bulundu</small>
 </div>
 
+<form method="get" action="/Blog" class="mb-4">
+    <div class="search-box">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" name="ara" value="@ViewBag.Ara"
+               placeholder="Yazılarda ara..." class="search-input" />
+        <button type="submit" class="search-btn">Ara</button>
+    </div>
+</form>
 @if (!Model.Any())
 {
     <div class="empty-state">
@@ -58,6 +66,12 @@
                 <h5>@yazi.Baslik</h5>
                 <p>@(yazi.Icerik.Length > 120 ? yazi.Icerik.Substring(0, 120) + "..." : yazi.Icerik)</p>
                 <span class="badge-date"><i class="fas fa-calendar-alt me-1"></i>@yazi.Tarih.ToString("dd MMMM yyyy")</span>
+                @if (yazi.Kategori != null)
+                {
+                    <span class="badge-date" style="background:rgba(13,110,253,0.15); color:#60a5fa">
+                        <i class="fas fa-tag me-1"></i>@yazi.Kategori.Ad
+                    </span>
+                }
             </div>
             <div class="d-flex gap-2 ms-3">
                 <a href="/Blog/Duzenle/@yazi.Id" class="btn-edit"><i class="fas fa-edit me-1"></i>Düzenle</a>

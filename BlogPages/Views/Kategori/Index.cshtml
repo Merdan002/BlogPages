@@ -1,0 +1,42 @@
+﻿@model List<KisselBlog.Models.Kategori>
+
+<div class="topbar">
+    <div>
+        <h4>🏷️ Kategoriler</h4>
+        <small style="color:#6060a0">Blog kategorilerini buradan yönet.</small>
+    </div>
+</div>
+
+<!-- YENİ KATEGORİ EKLE -->
+<div class="form-card mb-4">
+    <h6 style="color:#9090b0; margin-bottom:15px">Yeni Kategori Ekle</h6>
+    <form method="post" action="/Kategori/Ekle" class="d-flex gap-3">
+        <input type="text" name="ad" class="form-control" placeholder="Kategori adı..." />
+        <button type="submit" class="btn-save" style="white-space:nowrap">
+            <i class="fas fa-plus me-2"></i>Ekle
+        </button>
+    </form>
+</div>
+
+<!-- KATEGORİ LİSTESİ -->
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="fas fa-tags"></i>
+        <h5 style="color:#4040a0">Henüz kategori yok</h5>
+        <p style="color:#4040a0">Yukarıdan ilk kategoriyi ekle!</p>
+    </div>
+}
+
+@foreach (var kategori in Model)
+{
+    <div class="blog-card d-flex justify-content-between align-items-center">
+        <div>
+            <h5><i class="fas fa-tag me-2" style="color:#a78bfa"></i>@kategori.Ad</h5>
+        </div>
+        <a href="/Kategori/Sil/@kategori.Id" class="btn-delete"
+               onclick="return confirm('Bu kategoriyi silmek istediğine emin misin?')">
+            <i class="fas fa-trash me-1"></i>Sil
+        </a>
+    </div>
+}
