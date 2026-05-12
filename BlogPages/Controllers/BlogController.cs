@@ -79,5 +79,20 @@ namespace KisselBlog.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // Herkese açık blog sayfası
+        public IActionResult Anasayfa()
+        {
+            var yazilar = _context.BlogYazilari.OrderByDescending(x => x.Tarih).ToList();
+            return View(yazilar);
+        }
+
+        // Yazı detay sayfası
+        public IActionResult Detay(int id)
+        {
+            var yazi = _context.BlogYazilari.Find(id);
+            if (yazi == null) return RedirectToAction("Anasayfa");
+            return View(yazi);
+        }
     }
 }

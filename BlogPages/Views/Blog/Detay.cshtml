@@ -1,0 +1,130 @@
+﻿@model KisselBlog.Models.BlogYazisi
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>@Model.Baslik</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                background: #0f0f1a;
+                color: #e0e0e0;
+                font-family: 'Segoe UI', sans-serif;
+            }
+
+            .navbar {
+                background: #1a1a2e;
+                border-bottom: 1px solid #2a2a4a;
+                padding: 15px 0;
+            }
+
+            .navbar-brand {
+                color: #a78bfa !important;
+                font-weight: 700;
+                font-size: 1.3rem;
+                text-decoration: none;
+            }
+
+            .btn-geri {
+                background: rgba(111,66,193,0.15);
+                color: #a78bfa;
+                border: none;
+                padding: 8px 18px;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                text-decoration: none;
+                transition: background 0.2s;
+            }
+
+                .btn-geri:hover {
+                    background: rgba(111,66,193,0.3);
+                    color: #a78bfa;
+                }
+
+            .article {
+                max-width: 750px;
+                margin: 60px auto;
+                padding: 0 20px;
+            }
+
+            .article-header {
+                margin-bottom: 40px;
+                padding-bottom: 30px;
+                border-bottom: 1px solid #2a2a4a;
+            }
+
+                .article-header h1 {
+                    color: white;
+                    font-size: 2.2rem;
+                    font-weight: 800;
+                    margin-bottom: 15px;
+                    line-height: 1.3;
+                }
+
+            .badge-date {
+                background: rgba(111,66,193,0.15);
+                color: #a78bfa;
+                padding: 6px 15px;
+                border-radius: 20px;
+                font-size: 0.85rem;
+            }
+
+            .article-body {
+                color: #b0b0c0;
+                font-size: 1.05rem;
+                line-height: 1.9;
+                white-space: pre-wrap;
+            }
+
+            .footer {
+                background: #1a1a2e;
+                border-top: 1px solid #2a2a4a;
+                text-align: center;
+                padding: 30px;
+                color: #4040a0;
+                margin-top: 80px;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="/Blog/Anasayfa">
+                <i class="fas fa-book-open me-2"></i>Kişisel Blogum
+            </a>
+            <a href="/Blog/Anasayfa" class="btn-geri">
+                <i class="fas fa-arrow-left me-2"></i>Geri Dön
+            </a>
+        </div>
+    </nav>
+
+    <!-- YAZI -->
+    <div class="article">
+        <div class="article-header">
+            <h1>@Model.Baslik</h1>
+            <span class="badge-date">
+                <i class="fas fa-calendar me-1"></i>@Model.Tarih.ToString("dd MMMM yyyy")
+            </span>
+        </div>
+        <div class="article-body">@Model.Icerik</div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>© 2024 Kişisel Blogum — ASP.NET Core ile yapıldı 💜</p>
+    </div>
+
+</body>
+</html>
