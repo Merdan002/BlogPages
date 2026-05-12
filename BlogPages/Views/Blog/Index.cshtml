@@ -1,0 +1,40 @@
+﻿@model List<KisselBlog.Models.BlogYazisi>
+
+<div class="hero">
+    <h1>📖 Kişisel Blogum</h1>
+    <p>Düşünceler, notlar ve daha fazlası...</p>
+    <a href="/Blog/Ekle" class="btn btn-light btn-lg mt-2">+ Yeni Yazı Ekle</a>
+</div>
+
+<div class="container">
+    @if (Model.Count == 0)
+    {
+        <div class="text-center py-5">
+            <h4>Henüz hiç yazı yok 📝</h4>
+            <p>İlk yazını ekleyerek başla!</p>
+            <a href="/Blog/Ekle" class="btn btn-primary">İlk Yazımı Ekle</a>
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var yazi in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@yazi.Baslik</h5>
+                        <p class="card-text text-muted">
+                            @(yazi.Icerik.Length > 150 ? yazi.Icerik.Substring(0, 150) + "..." : yazi.Icerik)
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-muted">🗓️ @yazi.Tarih.ToShortDateString()</small>
+                        <a href="/Blog/Duzenle/@yazi.Id" class="btn btn-sm btn-outline-primary">✏️ Düzenle</a>
+                        <a href="/Blog/Sil/@yazi.Id" class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Bu yazıyı silmek istediğine emin misin?')">🗑️ Sil</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

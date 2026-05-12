@@ -1,0 +1,18 @@
+﻿@model KisselBlog.Models.BlogYazisi
+
+<div class="container mt-4">
+    <h2>✏️ Yeni Yazı Ekle</h2>
+
+    <form method="post">
+        <div class="mb-3">
+            <label>Başlık</label>
+            <input asp-for="Baslik" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>İçerik</label>
+            <textarea asp-for="Icerik" class="form-control" rows="6"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+        <a href="/Blog" class="btn btn-secondary">Geri Dön</a>
+    </form>
+</div>

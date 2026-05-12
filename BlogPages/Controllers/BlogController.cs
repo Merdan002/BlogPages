@@ -33,5 +33,39 @@ namespace KisselBlog.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        //
+        public IActionResult Sil(int id)
+        {
+            var yazi = _context.BlogYazilari.Find(id);
+            if (yazi != null)
+            {
+                _context.BlogYazilari.Remove(yazi);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
+        // Düzenleme sayfasını aç
+        public IActionResult Duzenle(int id)
+        {
+            var yazi = _context.BlogYazilari.Find(id);
+            if (yazi == null) return RedirectToAction("Index");
+            return View(yazi);
+        }
+
+        // Düzenlenmiş yazıyı kaydet
+        [HttpPost]
+        public IActionResult Duzenle(BlogYazisi yazi)
+        {
+            var mevcutYazi = _context.BlogYazilari.Find(yazi.Id);
+            if (mevcutYazi != null)
+            {
+                mevcutYazi.Baslik = yazi.Baslik;
+                mevcutYazi.Icerik = yazi.Icerik;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
